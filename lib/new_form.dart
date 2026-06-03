@@ -31,7 +31,6 @@ class _NewFormState extends State<NewForm> with TickerProviderStateMixin {
   static const Color _primaryLight = Color(0xFFA17D88);
   static const Color _primaryDark = Color(0xFF5D434B);
   static const Color _cardBg = Color(0xFFF8F5F6);
-  static const Color _textDark = Color(0xFF1E293B);
   static const Color _hintDark = Color(0xFF6B7280);
 
   @override

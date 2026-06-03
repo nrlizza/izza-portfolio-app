@@ -38,7 +38,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
               child: Container(
                 margin: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(Icons.arrow_back),
@@ -74,7 +74,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
                         project.technologies.join(" • "),
                         style: TextStyle(
                           fontSize: 14,
-                          color: const Color(0xFF1E293B).withOpacity(0.65),
+                          color: const Color(0xFF1E293B).withValues(alpha: 0.65),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -156,7 +156,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
                                 color: const Color(0xFFF8F5F6),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: const Color(0xFF8B6B78).withOpacity(0.3),
+                                  color: const Color(0xFF8B6B78).withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Text(
@@ -268,9 +268,9 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
         else
           Center(
             child: Icon(
-              Icons.project_outline,
+              Icons.work_outline,
               size: 80,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
             ),
           ),
 
@@ -282,7 +282,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                Colors.black.withOpacity(0.3),
+                Colors.black.withValues(alpha: 0.3),
               ],
             ),
           ),
@@ -321,7 +321,7 @@ class _PortfolioDetailPageState extends State<PortfolioDetailPage> {
                     child: Icon(
                       Icons.image,
                       size: 48,
-                      color: const Color(0xFF64748B).withOpacity(0.5),
+                      color: const Color(0xFF64748B).withValues(alpha: 0.5),
                     ),
                   );
                 },
