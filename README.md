@@ -1,26 +1,5 @@
 # 📱 Personal Profile App — Flutter
 
-Aplikasi profil pribadi berbasis **Flutter** yang menampilkan informasi diri, portfolio project, dan kontak dalam tampilan modern dengan animasi yang smooth.
-
-## 👤 Informasi Pembuat
-
-| Data            | Keterangan              |
-|-----------------|-------------------------|
-| **Nama**        | Nurul Izza              |
-| **Jurusan**     | Teknik Informatika      |
-| **Angkatan**    | 2023                    |
-| **Alamat**      | Jakarta Timur           |
-
-## 📖 Deskripsi Aplikasi
-
-Aplikasi ini merupakan tugas praktikum Mobile & Web Programming yang dibangun menggunakan framework Flutter. Aplikasi menampilkan profil lengkap berupa:
-
-- **About Me** — Informasi diri dan daftar keahlian/skills
-- **Portfolio** — Daftar project yang pernah dikerjakan beserta detail dan screenshot
-- **Contact** — Informasi kontak dan media sosial
-
-Aplikasi ini mengimplementasikan berbagai konsep Flutter seperti StatefulWidget, navigasi antar halaman, animasi, form validation, dan custom theming.
-
 ## ✨ Fitur Utama
 
 ### Halaman Profil (`profil_page.dart`)
@@ -62,8 +41,7 @@ Aplikasi menggunakan custom color palette **Mauve/Dusty Rose** yang diterapkan s
 ## 🎬 Animasi yang Digunakan
 
 | Animasi               | Widget/Class            | Lokasi                  | Keterangan                              |
-|-----------------------|-------------------------|-------------------------|-----------------------------------------|
-| Hero Animation        | `Hero`                  | profil ↔ form           | Avatar "terbang" antar halaman          |
+
 | Fade Transition       | `AnimatedOpacity`       | profil_page             | Transisi konten saat ganti tab          |
 | Container Animation   | `AnimatedContainer`     | profil_page, new_form   | Tab button & submit button berubah      |
 | Content Switcher      | `AnimatedSwitcher`      | profil_page             | Pergantian konten tab                   |
@@ -128,16 +106,16 @@ praktikum/
 ## 📋 Daftar Tugas yang Dikerjakan
 
 ### Tugas Mandiri
-- [x] Ganti informasi profil (nama, alamat, jurusan, angkatan)
-- [x] Ganti foto profil dengan foto sendiri
-- [x] Ganti role/jabatan
-- [x] Lengkapi Tab About Me (4 info diri + 9 skills)
-- [x] Lengkapi Tab Portfolio (3 project)
-- [x] Lengkapi Tab Contact (email, WhatsApp, GitHub, LinkedIn)
+- Ganti informasi profil (nama, alamat, jurusan, angkatan)
+- Ganti foto profil dengan foto sendiri
+- Ganti role/jabatan
+- Lengkapi Tab About Me (4 info diri + 9 skills)
+- Lengkapi Tab Portfolio (3 project)
+- Lengkapi Tab Contact (email, WhatsApp, GitHub, LinkedIn)
 
-### Tugas Pengembangan (5 dari 5 — minimal 2)
-- [x] **A** — Tambah Halaman Baru (`project_detail.dart` + `Navigator.push()`)
-- [x] **B** — Tambah Foto di Portfolio (`Image.asset()` + carousel)
-- [x] **C** — Ubah Tema Warna (palette mauve konsisten)
-- [x] **D** — Tambah Animasi (Hero, AnimatedOpacity, AnimatedContainer, FadeTransition, AnimatedSwitcher)
-- [x] **E** — Tambah Form Input (`new_form.dart` + validasi)
+### Tugas Pengembangan
+- **A** — Tambah Halaman Baru (`project_detail.dart` + `Navigator.push()`)
+- **B** — Tambah Foto di Portfolio (`Image.asset()` + carousel)
+- **C** — Ubah Tema Warna (palette mauve konsisten)
+- **D** — Tambah Animasi (Hero, AnimatedOpacity, AnimatedContainer, FadeTransition, AnimatedSwitcher)
+- **E** — Tambah Form Input (`new_form.dart` + validasi)
