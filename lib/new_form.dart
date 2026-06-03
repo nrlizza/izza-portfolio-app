@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ============================================================
-//  NEW FORM PAGE - Input form with validation
-//  Concepts demonstrated:
-//  1. TextFormField & Form validation
-//  2. Hero animation (shared avatar element)
-//  3. AnimatedContainer for submit button feedback
-//  4. AnimatedOpacity for success message
-// ============================================================
-
 class NewForm extends StatefulWidget {
   const NewForm({super.key});
 
