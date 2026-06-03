@@ -7,7 +7,7 @@ class NewForm extends StatefulWidget {
   State<NewForm> createState() => _NewFormState();
 }
 
-class _NewFormState extends State<NewForm> {
+class _NewFormState extends State<NewForm> with TickerProviderStateMixin {
   // Form key for validation
   final _formKey = GlobalKey<FormState>();
 
@@ -16,6 +16,11 @@ class _NewFormState extends State<NewForm> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _messageController = TextEditingController();
+
+  // Animation controllers
+  late AnimationController _fadeInController;
+  late AnimationController _slideController;
+  late AnimationController _scaleButtonController;
 
   // State for animations
   bool _isSubmitted = false;
@@ -30,11 +35,44 @@ class _NewFormState extends State<NewForm> {
   static const Color _hintDark = Color(0xFF6B7280);
 
   @override
+  void initState() {
+    super.initState();
+    // Animation untuk fade in form fields
+    _fadeInController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    
+    // Animation untuk slide form fields
+    _slideController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    
+    // Animation untuk scale submit button
+    _scaleButtonController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    // Start animations
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (mounted) {
+        _fadeInController.forward();
+        _slideController.forward();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _messageController.dispose();
+    _fadeInController.dispose();
+    _slideController.dispose();
+    _scaleButtonController.dispose();
     super.dispose();
   }
 
@@ -42,6 +80,11 @@ class _NewFormState extends State<NewForm> {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isButtonPressed = true;
+      });
+
+      // Trigger scale animation
+      _scaleButtonController.forward().then((_) {
+        _scaleButtonController.reverse();
       });
 
       // Simulate a short delay then show success
@@ -129,15 +172,13 @@ class _NewFormState extends State<NewForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Name field
-                    _buildLabel("Full Name"),
-                    const SizedBox(height: 6),
-                    TextFormField(
+                    // Name field with SlideTransition
+                    _buildAnimatedField(
+                      delay: 0,
+                      label: "Full Name",
                       controller: _nameController,
-                      decoration: _inputDecoration(
-                        hint: "Enter full name",
-                        icon: Icons.person_outline,
-                      ),
+                      hint: "Enter full name",
+                      icon: Icons.person_outline,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Name cannot be empty';
@@ -148,16 +189,14 @@ class _NewFormState extends State<NewForm> {
 
                     const SizedBox(height: 16),
 
-                    // Email field
-                    _buildLabel("Email"),
-                    const SizedBox(height: 6),
-                    TextFormField(
+                    // Email field with SlideTransition
+                    _buildAnimatedField(
+                      delay: 100,
+                      label: "Email",
                       controller: _emailController,
+                      hint: "example@email.com",
+                      icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: _inputDecoration(
-                        hint: "example@email.com",
-                        icon: Icons.email_outlined,
-                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Email cannot be empty';
@@ -171,16 +210,14 @@ class _NewFormState extends State<NewForm> {
 
                     const SizedBox(height: 16),
 
-                    // Phone field
-                    _buildLabel("Phone Number"),
-                    const SizedBox(height: 6),
-                    TextFormField(
+                    // Phone field with SlideTransition
+                    _buildAnimatedField(
+                      delay: 200,
+                      label: "Phone Number",
                       controller: _phoneController,
+                      hint: "+62 xxx xxxx xxxx",
+                      icon: Icons.phone_outlined,
                       keyboardType: TextInputType.phone,
-                      decoration: _inputDecoration(
-                        hint: "+62 xxx xxxx xxxx",
-                        icon: Icons.phone_outlined,
-                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Phone number cannot be empty';
@@ -191,16 +228,14 @@ class _NewFormState extends State<NewForm> {
 
                     const SizedBox(height: 16),
 
-                    // Message field
-                    _buildLabel("Message"),
-                    const SizedBox(height: 6),
-                    TextFormField(
+                    // Message field with SlideTransition
+                    _buildAnimatedField(
+                      delay: 300,
+                      label: "Message",
                       controller: _messageController,
+                      hint: "Write your message here...",
+                      icon: Icons.message_outlined,
                       maxLines: 4,
-                      decoration: _inputDecoration(
-                        hint: "Write your message here...",
-                        icon: Icons.message_outlined,
-                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Message cannot be empty';
@@ -211,55 +246,60 @@ class _NewFormState extends State<NewForm> {
 
                     const SizedBox(height: 28),
 
-                    // --- Submit button with AnimatedContainer ---
+                    // --- Submit button with ScaleTransition + AnimatedContainer ---
                     Center(
-                      child: GestureDetector(
-                        onTap: _isSubmitted ? null : _submitForm,
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 350),
-                          curve: Curves.easeInOut,
-                          width: _isButtonPressed ? 60 : double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: _isSubmitted
-                                ? Colors.green
-                                : _primary,
-                            borderRadius: BorderRadius.circular(
-                              _isButtonPressed ? 30 : 14,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: _primary.withValues(alpha: 0.3),
-                                blurRadius: 12,
-                                offset: const Offset(0, 4),
+                      child: ScaleTransition(
+                        scale: Tween<double>(begin: 1.0, end: 1.08).animate(
+                          CurvedAnimation(parent: _scaleButtonController, curve: Curves.easeInOut),
+                        ),
+                        child: GestureDetector(
+                          onTap: _isSubmitted ? null : _submitForm,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 350),
+                            curve: Curves.easeInOut,
+                            width: _isButtonPressed ? 60 : double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: _isSubmitted
+                                  ? Colors.green
+                                  : _primary,
+                              borderRadius: BorderRadius.circular(
+                                _isButtonPressed ? 30 : 14,
                               ),
-                            ],
-                          ),
-                          child: Center(
-                            child: _isSubmitted
-                                ? const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 28,
-                                  )
-                                : _isButtonPressed
-                                    ? const SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                          strokeWidth: 2.5,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: _primary.withValues(alpha: 0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: _isSubmitted
+                                  ? const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 28,
+                                    )
+                                  : _isButtonPressed
+                                      ? const SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2.5,
+                                          ),
+                                        )
+                                      : const Text(
+                                          "Send",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0.5,
+                                          ),
                                         ),
-                                      )
-                                    : const Text(
-                                        "Send",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 0.5,
-                                        ),
-                                      ),
+                            ),
                           ),
                         ),
                       ),
@@ -303,6 +343,66 @@ class _NewFormState extends State<NewForm> {
                   ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --- Helper: Animated form field dengan SlideTransition + FadeTransition ---
+  Widget _buildAnimatedField({
+    required int delay,
+    required String label,
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    required String? Function(String?) validator,
+  }) {
+    // Delay untuk staggered animation
+    final delayFraction = delay / 400.0;
+    
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0.3, 0),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: _slideController,
+          curve: Interval(
+            delayFraction.clamp(0.0, 1.0),
+            (delayFraction + 0.4).clamp(0.0, 1.0),
+            curve: Curves.easeOut,
+          ),
+        ),
+      ),
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(
+            parent: _fadeInController,
+            curve: Interval(
+              delayFraction.clamp(0.0, 1.0),
+              (delayFraction + 0.4).clamp(0.0, 1.0),
+              curve: Curves.easeOut,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLabel(label),
+            const SizedBox(height: 6),
+            TextFormField(
+              controller: controller,
+              keyboardType: keyboardType,
+              maxLines: maxLines,
+              decoration: _inputDecoration(
+                hint: hint,
+                icon: icon,
+              ),
+              validator: validator,
             ),
           ],
         ),

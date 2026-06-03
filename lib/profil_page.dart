@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:praktikum/new_form.dart';
 import 'package:praktikum/project_detail.dart';
+import 'package:praktikum/portfolio_detail_page.dart';
 
 // --- Custom Color Palette ---
 class AppColors {
@@ -481,13 +482,17 @@ _skillChip("Python"),
 
   //  Widget card untuk portfolio - navigable ke detail page
   Widget _portoCard(String title, String tech, IconData icon) {
+    // Cari project data untuk mendapatkan screenshot
+    final project = projectsData[title];
+    final hasScreenshots = project?.screenshots.isNotEmpty ?? false;
+
     return GestureDetector(
       onTap: () {
-        //  Navigasi ke halaman detail project dengan Hero animation
+        //  Navigasi ke halaman detail portfolio dengan Navigator.push()
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProjectDetailPage(projectName: title),
+            builder: (context) => PortfolioDetailPage(projectName: title),
           ),
         );
       },
@@ -495,26 +500,112 @@ _skillChip("Python"),
         elevation: 0,
         color: AppColors.cardBg,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: ListTile(
-          //  ListTile: widget praktis untuk baris dengan icon, judul, subtitle
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          leading: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.iconBg,
-              borderRadius: BorderRadius.circular(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Preview Image dengan Image.asset()
+            if (hasScreenshots)
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                    child: Image.asset(
+                      project!.screenshots[0],
+                      height: 140,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 140,
+                          color: Colors.grey.shade300,
+                          child: Icon(
+                            Icons.image,
+                            size: 40,
+                            color: Colors.grey.shade600,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  // Overlay gelap untuk kontras text
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.2),
+                          ],
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            // Project Info
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          icon,
+                          color: AppColors.primary,
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              tech,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textDark.withOpacity(0.6),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: AppColors.textDark.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            child: Icon(icon, color: AppColors.primary),
-          ),
-          title: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-          ),
-          subtitle: Text(
-            tech,
-            style: TextStyle(fontSize: 12, color: AppColors.textDark.withOpacity(0.65)),
-          ),
-          trailing: Icon(Icons.arrow_forward_ios, size: 14, color: AppColors.textDark.withOpacity(0.65)),
+          ],
         ),
       ),
     );
