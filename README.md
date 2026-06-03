@@ -20,7 +20,6 @@
 ### Halaman Form Input (`new_form.dart`)
 - 4 field input: Full Name, Email, Phone Number, Message
 - Validasi form (tidak boleh kosong, format email)
-- Hero animation pada avatar profil
 - Animasi submit button (mengecil → loading → centang hijau)
 - Pesan sukses dengan AnimatedOpacity
 - Auto-navigasi kembali ke halaman utama setelah submit
