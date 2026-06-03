@@ -2,19 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:praktikum/new_form.dart';
 import 'package:praktikum/project_detail.dart';
 
-// ============================================================
-//  PROFILE PAGE - Example StatefulWidget in Flutter
-//  Concepts demonstrated:
-//  1. StatefulWidget & State
-//  2. Scaffold, AppBar, FloatingActionButton
-//  3. Stack & Positioned
-//  4. Column, Row, Container
-//  5. Navigator & Routing
-//  6. setState() to update the UI
-//  7. Hero animation (avatar between pages)
-//  8. AnimatedOpacity for smooth content transitions
-// ============================================================
-
 // --- Custom Color Palette ---
 class AppColors {
   static const Color primary = Color(0xFF73555F);

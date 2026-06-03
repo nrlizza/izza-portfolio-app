@@ -1,16 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ============================================================
-//  PROJECT DETAIL PAGE - Professional Portfolio Project Showcase
-//  Features:
-//  1. Responsive design (mobile-first)
-//  2. Smooth page transitions & animations
-//  3. Consistent theme with portfolio (mauve colors, dark text)
-//  4. Hero section with technology badges
-//  5. Key features, tech stack, and project links
-//  6. Screenshot gallery carousel
-// ============================================================
-
 // --- Project Data Model ---
 class ProjectData {
   final String title;
